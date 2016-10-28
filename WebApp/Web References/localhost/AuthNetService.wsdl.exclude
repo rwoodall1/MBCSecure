@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://securepayportal.com/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://securepayportal.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Authorize.net Credit Card Submission</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://securepayportal.com/">
+      <s:element name="Capture">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:AuthReq" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AuthReq">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Custid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SiteName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zip" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Method" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="echecktype" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bankaccounttype" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bankname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bankcustomername" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bankaccountnumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bankabacode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardNum" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecurityCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Amount" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardFname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardLname" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CaptureResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CaptureResult" type="tns:Response" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Response">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Custid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransActionType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Approved" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Amount" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TransId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Method" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardNum" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CaptureSoapIn">
+    <wsdl:part name="parameters" element="tns:Capture" />
+  </wsdl:message>
+  <wsdl:message name="CaptureSoapOut">
+    <wsdl:part name="parameters" element="tns:CaptureResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Authorize.netSubmissionSoap">
+    <wsdl:operation name="Capture">
+      <wsdl:input message="tns:CaptureSoapIn" />
+      <wsdl:output message="tns:CaptureSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Authorize.netSubmissionSoap" type="tns:Authorize.netSubmissionSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Capture">
+      <soap:operation soapAction="http://securepayportal.com/Capture" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Authorize.netSubmissionSoap12" type="tns:Authorize.netSubmissionSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Capture">
+      <soap12:operation soapAction="http://securepayportal.com/Capture" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Authorize.netSubmission">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Authorize.net Credit Card Submission</wsdl:documentation>
+    <wsdl:port name="Authorize.netSubmissionSoap" binding="tns:Authorize.netSubmissionSoap">
+      <soap:address location="http://localhost:64665/AuthNetService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Authorize.netSubmissionSoap12" binding="tns:Authorize.netSubmissionSoap12">
+      <soap12:address location="http://localhost:64665/AuthNetService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

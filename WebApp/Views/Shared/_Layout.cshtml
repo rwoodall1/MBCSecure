@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Cattle360</title>
+    <link rel="stylesheet" href="/Content/sass/siteAngular.css" />
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:center;margin-top:20px"><a href="/"><img src="Content/img/logo.png" alt="Cattle360" title="Cattle360" /></a></div>
+        
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/login")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

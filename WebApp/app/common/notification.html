@@ -1,0 +1,8 @@
+﻿<div ng-controller="NotificationCtrl">
+    <div ng-repeat="message in messages">
+        <div class="{{message.notificationClass}}" role="alert" ng-if="message.displayError">
+            <button class="close" aria-label="Close" ng-click="dismissAlert($index)"><span aria-hidden="true">&times;</span></button>
+            <span ng-bind-html="message.userMessage"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@model WebApp.Models.LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="login-section" class="row">
+    @using (Html.BeginForm("Login", "Authentication", FormMethod.Post, new { @class = "login-form col-sm-6 col-sm-offset-3", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <div class="row">
+                <div class="form-group">
+                    @Html.Label("Username", htmlAttributes: new { @class = "" })
+                    @Html.TextBoxFor(m => m.UserName, new { @placeholder = "Enter Username", @autofocus = "autofocus", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    @Html.Label("Password", htmlAttributes: new { @class = "" })
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Enter Password", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default login-button" value="LOG IN">
+                </div>
+            </div>
+            
+            <div class="row">
+                <br />
+                @Html.ActionLink("Forgot Password?", "ForgotPassword", "Authentication")
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            <div id="notification-alert" class="alert alert-danger" role="alert" style="display:none">
+                <p id="notification-message">Error!</p>
+            </div>
+
+        </fieldset>
+    }
+</section>

@@ -1,0 +1,9 @@
+﻿<div class="signaturePad">
+    <!--    <div class="sig sigWrapper" ng-mousedown="updateSignature()" ng-mouseover="updateSignature()" ng-touch="updateSignature()">-->
+    <div class="sig sigWrapper" ng-click="updateSignature()">
+        <canvas class="pad" width="320" height="120">[No canvas support]</canvas>
+        <input type="hidden" id="sigOutput" class="sigOutput" />
+    </div>
+    <button type="button" class="btn order-button signature-clear-button" ng-click="updateSignature(null)" trns>Clear Signature</button>
+    <div class="sigError"></div>
+</div>

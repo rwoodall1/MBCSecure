@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://localhost:64665/AuthNetService.asmx?wsdl" docRef="http://localhost:64665/AuthNetService.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://localhost:64665/AuthNetService.asmx" xmlns:q1="http://securepayportal.com/" binding="q1:Authorize.netSubmissionSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://localhost:64665/AuthNetService.asmx" xmlns:q2="http://securepayportal.com/" binding="q2:Authorize.netSubmissionSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

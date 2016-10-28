@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" ng-app="app">
+    <head>
+        <base href="/">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title ng-bind="$state.current.data.pageTitle"></title>
+        <meta name="Publisher" content="Budget Mobile">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="/v-1/Content/js/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/v-1/Content/js/bootstrap/dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc6/angular-material.min.css">
+        <link rel="stylesheet" href="/v-1/Content/css/site.css">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <!--<link rel="stylesheet" href="/v-1/Content/js/jPush/css/jPushMenu.css">-->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <script src="/v-1/Content/js/jquery-ui/jquery-ui.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+
+        <script src="/v-1/Content/js/angular-sanitize/angular-sanitize.min.js"></script>
+        <script src="/v-1/Content/js/angular-loader/angular-loader.min.js"></script>
+        <script src="/v-1/Content/js/angular-animate/angular-animate.min.js"></script>
+        <script src="/v-1/Content/js/angular-animate/angular-animate.min.js"></script>
+        <script src="/v-1/Content/js/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="/v-1/Content/js/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <script src="/v-1/Content/js/angular-bootstrap-show-errors/src/showErrors.min.js"></script>
+        <script src="/v-1/Content/js/angular-loading-bar/build/loading-bar.min.js"></script>
+        <script src="/v-1/Content/js/showdown/compressed/Showdown.min.js"></script>
+        <script src="/v-1/Content/js/angular-markdown-filter/markdown.js"></script>
+        <script src="/v-1/Content/js/ng-file-upload/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+        <script src="/v-1/Content/js/ng-file-upload/ng-file-upload.min.js"></script>
+        <script src="/v-1/Content/js/moment/min/moment.min.js"></script>
+        <script src="/v-1/Content/js/angular-moment/angular-moment.min.js"></script>
+      
+        <script src="/v-1/Content/js/angular-gettext/dist/angular-gettext.min.js"></script>
+        <!--<script src="/v-1/Content/js/angular-storage/angular-storage.js"></script>
+        <script src="/v-11/Content/js/ngCart/src/ngCart.directives.js"></script>
+        <script src="/v-11/Content/js/ngCart/src/ngCart.js"></script>
+        <script src="/v-11/Content/js/ngCart/src/ngCart.fulfilment.js"></script>-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0-rc6/angular-material.min.js"></script>
+
+        <script src="/v-1/app/app.js"></script>
+        <script src="/v-1/app/common/services.js"></script>
+        <script src="/v-1/app/common/footer.js"></script>
+        <script src="/v-1/app/common/notification.js"></script>
+        <script src="/v-1/app/common/constants.js"></script>
+        <script src="/v-1/app/common/filters.js"></script>
+        <script src="/v-1/app/common/directives.js"></script>
+        <script src="/v-1/app/main/mbc/receipt.js"></script>
+        <script src="/v-1/app/main/mbc/schoolreceipt.js"></script>
+        <script src="/v-1/app/main/mbc/parentPay.js"></script>
+        <script src="/v-1/app/main/mbc/schoolPay.js"></script>
+       
+    </head>
+    <body>
+        <div class="container mainContainer">
+            <div class="row" style="background-color:#fff">
+                <div class="col-md-4"><a href="/"><img src="v-1/Content/images/logo.png" class="logo" alt="Memory Book" title="Jostens Kinderkraft" /></a></div>
+            </div>
+            <div class="row body-content">
+                <div class="col-md-12">
+                    <div ui-view> </div>
+                </div>
+            </div>
+                       
+            <div class="row">
+                <div class="col-md-12 footer"><div ng-include src="'/app/common/footer.html'"></div></div>
+            </div>
+        </div>
+    </body>
+</html>

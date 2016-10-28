@@ -1,0 +1,133 @@
+﻿<div id="confirmationSubmission" style="text-align:left;">
+    <h1 trns>{{order.schname}} Pay Site</h1>
+    <div ng-if="!hasLoaded"><img src="/Content/images/spiffygif_30x30.gif" style="text-align: center" ng-hide="hasLoaded" /></div>
+
+    <form role="form" class="form-horizontal" name="receiptForm" novalidate>
+        <input ng-model="form" ng-init="form=receiptForm" hidden>
+        <div ng-if="hasLoaded">
+     
+            <div class="form-group col-md-12">
+                <label style="font-size:x-large"><trns>Thank you for your payment</trns></label>
+
+            </div>
+            <div  class="form-group col-md-12">
+                <div style="border:solid">
+                    <div style="color:rebeccapurple;font-size:large"><strong>Celebrate your student with Yourbook pages and a Customized Banner!</strong></div>
+                    <div style="color:rebeccapurple">Yourbook Pages</div>
+                    <div>These 4-page supplements are a great way to personalize a yearbook with your child’s photos and activities. Easily build your pages online using our pre-designed templates and backgrounds. $8.00 plus $2.00 shipping.</div>
+                    <div style="color:rebeccapurple"> Banners</div>
+                    <div>
+                        Say it BIG with a banner to celebrate your student’s success. These 18˝ x 54˝ banners are designed and ordered online, then shipped directly to you. $43.95 plus $6.00 shipping.
+                        <a href="https://products.memorybook.com/category" target="_blank">Click here to order Yourbook Pages or Banners!<br /> <img src="../../../Content/images/banner_receipt.jpg" /></a>
+                    </div>
+                </div>
+
+            </div>
+            <div  class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>School Name Name</strong></trns> {{order.schname}}
+                </div>
+               </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>School Code</strong></trns> {{order.schcode}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Payer Name</strong></trns> {{order.payerFname}} {{order.payerLname}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Order Date</strong></trns> {{order.orderDate|date}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Order Id</strong></trns> {{order.orderId}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Pay Type</strong></trns> {{order.payType}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Transaction Id</strong></trns> {{order.transId}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Authorization Code</strong></trns> {{order.authCode}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <trns><strong>Amount Paid</strong></trns> {{order.payment|currency}}
+                </div>
+            </div>
+        
+            <!--<div class="col-xs-12 col-sm-8 add-level-button-group" ng-show="hasLoaded">
+                
+                <a href="#" ng-click="showPrintPopup()"  style="float:right"class="btn order-button" trns>Print this page</a>
+            </div>-->
+            <div></div>
+            <div ng-if="hasAd" style="font-size:larger"><strong><a href="http://mbcadpages.v5.pressero.com/" target="_blank">You have ordered an ad. Click here to configure your ad. (http://mbcadpages.v5.pressero.com/)</a></strong></div>
+            <div style="color:red;margin-bottom:5px"><i>If you have questions about your order contact your school's yearbook advisor. </i></div>
+            <div ng-repeat="item in order.items" class="row">
+                <div class="col-xs-8 col-sm-10 col-md-8">
+
+                    <table class="table table-bordered table-hover table-condensed  table-striped">
+                        <!--<tr>
+                            <th trns>Total Amount</th>
+                            <th trns>Process ID</th>
+                        </tr>-->
+                        <tr>
+                            <td><strong>Item Quantity</strong></td>
+                            <td>{{item.itemqty}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Item</strong></td>
+                            <td>{{item.bookType}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Student Name</strong></td>
+                            <td>{{item.studentfname}} {{item.studentlname}} </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Teacher</strong></td>
+                            <td>{{item.teacher}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grade</strong></td>
+                            <td>{{item.grade}}</td>
+                        </tr>
+                        <tr ng-if="(item.persText1!=''&& item.persText1!='Not Available')">
+                            <td ng-if="item.booType=='Love Line'"><strong>Love Line</strong></td>
+                            <td ng-if="item.bookType!='Love Line'&& (item.persText1!='')"><strong>Personalized Text {{item.persText1}}</strong></td>
+                            <td>{{item.persText1}}</td>
+                        </tr>
+
+                        <tr ng-if="item.bookType=='Personalized Ink Yearbook'||item.bookType=='Personalized Foil Yearbook'">
+                            <td><strong>Icons</strong></td>
+                            <td style="font-size:xx-small"><i>{{item.caption1}}  {{item.caption2}} <br />{{item.caption3}}  {{item.caption4}}</i></td>
+                        </tr>
+                        <tr >
+                            <td>Item Amount</td>
+                         
+                            <td >{{item.itemTotal|currency}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </form>
+   
+
+</div>

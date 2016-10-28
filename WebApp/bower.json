@@ -1,0 +1,39 @@
+{
+  "name": "LS.WebApp",
+  "version": "1.0.0",
+  "license": "Propietary",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "latest",
+    "jquery-ui": "~1.11.4",
+    "angular-ui-grid": "3.0.0-rc.16",
+    "angular-ui-router": "0.2.13",
+    "angular": "1.3.9",
+    "accounting.js": "0.3.2",
+    "blockui": "2.70",
+    "bootstrap": "3.3.1",
+    "angular-bootstrap": "0.12.0",
+    "normalize.css": "3.0.2",
+    "html5shiv": "3.7.2",
+    "angular-cookies": "1.3.9",
+    "angular-loader": "1.3.9",
+    "angular-bootstrap-show-errors": "2.2.0",
+    "angular-loading-bar": "0.6.0",
+    "angular-animate": "1.3.9",
+    "angular-markdown-filter": "~1.1.0",
+    "ng-file-upload": "~5.0.9",
+    "angular-sanitize": "1.3.9"
+  },
+  "devDependencies": {
+    "karma": "0.4.3"
+  },
+  "resolutions": {
+    "angular": "1.3.9"
+  }
+}
