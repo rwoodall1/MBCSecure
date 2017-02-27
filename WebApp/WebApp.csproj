@@ -274,13 +274,13 @@
     <Content Include="app\common\notification.js" />
     <Content Include="app\common\services.js" />
     <Content Include="app\index.html" />
+    <Content Include="app\main\mbc\parentPay.html" />
     <Content Include="app\main\mbc\schoolreceipt.html" />
     <Content Include="app\main\mbc\schoolreceipt.js" />
     <Content Include="app\main\mbc\schoolPay.js" />
     <Content Include="app\main\mbc\schoolPay.html" />
     <Content Include="app\main\mbc\receipt.js" />
     <Content Include="app\main\mbc\receipt.html" />
-    <Content Include="app\main\mbc\parentPay.html" />
     <Content Include="app\main\mbc\parentPay.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="bin\Antlr3.Runtime.dll" />

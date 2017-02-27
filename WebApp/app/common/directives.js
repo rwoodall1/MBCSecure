@@ -144,7 +144,30 @@ angular.module('app')
 //<modal title="Modal 2" id="modal2">
 //    Modal 2
 //</modal>
+.directive('emailvalidate', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
 
+            var EMAIL_REGEXP = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            ctrl.$validators.email = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(modelValue)) {
+                    // consider empty models to be valid
+                    return true;
+                }
+
+                if (EMAIL_REGEXP.test(viewValue)) {
+                    // it is valid
+                    return true;
+                }
+
+                // it is invalid
+                return false;
+            };
+        }
+    };
+})
 .directive('modal', function () {
     return {
         template: '<div class="modal fade">' +
@@ -727,7 +750,38 @@ angular.module('app')
         }
     };
 }])
+.directive('validNumber', function () {
+    return {
+        require: '?ngModel',
+        link: function (scope, element, attrs, ngModelCtrl) {
+
+            if (!ngModelCtrl) {
+                return;
+            }
+
+            ngModelCtrl.$parsers.push(function (val) {
+                if (angular.isUndefined(val)) {
+                    var val = '';
+                }
+                var clean = val.replace(/[^0-9.]+/g, '');
+
+                if (val !== clean) {
+                    ngModelCtrl.$setViewValue(clean);
+                    ngModelCtrl.$render();
+                }
+                return clean;
+            });
+
+            element.bind('keypress', function (event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+        }
+    };
+})
 .directive('positivenumbervalidation', function () {
+
     return {
         require: 'ngModel',
         link: function (scope, elm, attrs, ctrl) {

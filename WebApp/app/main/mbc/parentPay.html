@@ -2,360 +2,364 @@
 <h1 trns>{{paymentInfo.schname}} Pay Site</h1>
 <div ng-if="!hasLoaded"><img src="/Content/images/spiffygif_30x30.gif" style="text-align: center" ng-hide="hasLoaded" /></div>
 
-    <form role="form" class="form-horizontal" name="payForm" novalidate>
-        <input ng-model="form" ng-init="form=payForm" hidden> 
-        <div ng-if="hasLoaded">
+<form role="form" class="form-horizontal" name="payForm" novalidate>
+    <input ng-model="form" ng-init="form=payForm" hidden>
+    <div ng-if="hasLoaded">
 
-            <div class="form-group col-md-12">
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="payType"
-                               ng-model="paymentInfo.payType"
-                               value="CC" required />
-                        <trns>Pay With Credit Card</trns>
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="payType" ng-model="paymentInfo.payType"
-                               value="EC" required />
-                        <trns>Pay With E-Check</trns>
-                    </label>
-                </div>
-                <div class="alert alert-danger" role="alert"
-                     ng-if="payForm.payType.$error.required && payForm.payType.$dirty">
-                   Select a payment type.
-                </div>
-
-            </div>
-            <div class="form-group">
-                <div class="col-sm-6">
-                    <trns><strong>Amount To Be Charged</strong></trns> {{paymentInfo.total|currency}}
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-6">
-                    <trns><strong> Email Address On File</strong></trns> {{paymentInfo.emailaddress}}  
-                </div>
-            </div>
-
-<!--Address Info-->
-          
-            <div class="form-group">
-                <label class="col-sm-3 control-label" trns>Account First Name</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control"
-                           ng-model="paymentInfo.firstName"
-                           name="firstName"
-                           ng-model-options="{ debounce: 500}"
-                           required />
-
-                    <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.firstName.$error.required && payForm.firstName.$dirty">
-                        <trns>Name is required.</trns>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" trns> Account Last Name</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control"
-                           ng-model="paymentInfo.lastName"
-                           name="lastName"
-                           ng-model-options="{ debounce: 500}"
-                           required />
-
-                    <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.lastName.$error.required && payForm.lastName.$dirty">
-                        <trns>Name is required.</trns>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" trns>Account Address</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control"
-                           ng-model="paymentInfo.address"
-                           name="address"
-                           ng-model-options="{ debounce: 500}"
-                           required />
-
-                    <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.address.$error.required && payForm.address.$dirty">
-                        <trns>Address is required.</trns>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" trns>Account City</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control"
-                           ng-model="paymentInfo.city"
-                           name="city"
-                           ng-model-options="{ debounce: 500}"
-                           required />
-
-                    <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.city.$error.required && payForm.city.$dirty">
-                        <trns>City is required.</trns>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" >
-                    <trns>Account State</trns>
+        <div class="form-group col-md-12">
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="payType"
+                           ng-model="paymentInfo.payType"
+                           value="CC" required />
+                    <trns>Pay With Credit Card</trns>
                 </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="payType" ng-model="paymentInfo.payType"
+                           value="EC" required />
+                    <trns>Pay With E-Check</trns>
+                </label>
+            </div>
+            <div class="alert alert-danger" role="alert"
+                 ng-if="payForm.payType.$error.required && payForm.payType.$dirty">
+                Select a payment type.
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <trns><strong>Amount To Be Charged</strong></trns> {{paymentInfo.total|currency}}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <trns><strong> Email Address On File</strong></trns> {{paymentInfo.emailaddress}}
+            </div>
+        </div>
+
+        <!--Address Info-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" trns>Account First Name</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"
+                       ng-model="paymentInfo.firstName"
+                       maxlength="30"
+                       name="firstName"
+                       ng-model-options="{ debounce: 500}"
+                       required />
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.firstName.$error.required && payForm.firstName.$dirty">
+                    <trns>Name is required.</trns>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" trns> Account Last Name</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"
+                       ng-model="paymentInfo.lastName"
+                       maxlength="30"
+                       name="lastName"
+                       ng-model-options="{ debounce: 500}"
+                       required />
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.lastName.$error.required && payForm.lastName.$dirty">
+                    <trns>Name is required.</trns>
+                </div>
+            </div>
+        </div>
+      <div class="form-group">
+            <label class="col-sm-3 control-label" trns>Account Address</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"
+                       ng-model="paymentInfo.address"
+                       maxlength="45"
+                       name="address"
+                       ng-model-options="{ debounce: 500}"
+                       required />
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.address.$error.required && payForm.address.$dirty">
+                    <trns>Address is required.</trns>
+                </div>
+            </div>
+        </div>
+         <div class="form-group">
+            <label class="col-sm-3 control-label" trns>Account City</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"
+                       ng-model="paymentInfo.city"
+                       maxlength="45"
+                       name="city"
+                       ng-model-options="{ debounce: 500}"
+                       required />
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.city.$error.required && payForm.city.$dirty">
+                    <trns>City is required.</trns>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                <trns>Account State</trns>
+            </label>
+            <div class="col-sm-4">
+                <select class="form-control"
+                      
+                        ng-model="paymentInfo.state"
+                        ng-options="state.name for state in states"
+                        name="year" ng-model-options="{ debounce: 500 }"
+                        required>
+
+                    <option value=''>- Select State -</option>
+                </select>
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.state.$error.required && payForm.state.$dirty">
+                    <trns>State is required.</trns>
+                </div>
+            </div>
+        </div>
+         <div class="form-group">
+            <label class="col-sm-3 control-label" trns>
+                <trns>Account Zip Code</trns>
+            </label>
+            <div class="col-sm-4">
+                <input type="text" maxlength="10" class="form-control"
+                       ng-model="paymentInfo.zip"
+                       name="zip"
+                       ng-model-options="{ debounce: 500}"
+                       required />
+
+                <div class="alert alert-danger" role="alert"
+                     ng-if="payForm.zip.$error.required && payForm.zip.$dirty">
+                    <trns>Zip Code is required.</trns>
+                </div>
+            </div>
+        </div>-->
+
+        <!--CC info-->
+        <div style="margin-bottom:20px" ng-if="paymentInfo.payType=='CC'">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label style="font-size:larger;text-decoration:underline"><trns>Credit Card Information</trns></label>
+                    <div>
+                        <img src="/Content/images/visa1_37x23_a.jpg" />
+                        <img src="/Content/images/mc_accpt_023_gif.gif" />
+                        <img src="/Content/images/Discover.jpg" />
+                        <img src="/Content/images/pay_logo_amex.gif" />
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Credit Card Number</label>
                 <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.ccNumber"
+                           name="ccNumber"
+                           ng-model-options="{ debounce: 500}"
+                           required />
+
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.ccNumber.$error.required && payForm.ccNumber.$dirty">
+                        Credit Card number is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Security Code</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.ccCode"
+                           name="ccCode"
+                           ng-model-options="{ debounce: 500}"
+                           required />
+
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.ccCode.$error.required && payForm.ccCode.$dirty">
+                        Security code is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-inline">
+                <label class="col-sm-3 control-label" trns>
+                    Enter Expiration Date
+                </label>
+                <br />
+                <div class="radio-inline">
+                    <label>
+                        <trns>Month</trns>
+                    </label>
                     <select class="form-control"
-                            ng-model="paymentInfo.state"
-                            ng-options="state.name for state in states"
+                            ng-model="paymentInfo.vmonth"
+                            ng-options="month.name for month in globalConstants.monthOptions"
+                            name="month" ng-model-options="{ debounce: 500 }"
+                            required>
+                        <option value=''>- Select Month -</option>
+                    </select>
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.month.$error.required && payForm.month.$dirty">
+                        Month is required.
+                    </div>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <trns>Year</trns>
+                    </label>
+                    <select class="form-control"
+                            ng-model="paymentInfo.vyear"
+                            ng-options="year.name for year in globalConstants.ccYears"
                             name="year" ng-model-options="{ debounce: 500 }"
                             required>
+                        <option value=''>- Select Year -</option>
+                    </select>
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.year.$error.required && payForm.year.$dirty">
+                        Month is required.
+                    </div>
+                </div>
 
-                        <option value=''>- Select State -</option>
+            </div>
+            <input ng-model="paymentInfo.expirationDate" ng-value="formatDate()" hidden />
+
+
+
+
+        </div>
+        <!--End CC-->
+        <!--E-Check info-->
+        <div ng-if="paymentInfo.payType=='EC'">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label style="font-size:larger;text-decoration:underline">E-Check Information</label>
+
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Name On Account</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.ecAccountName"
+                           name="ecAccountName"
+                           ng-model-options="{ debounce: 500}"
+                           required />
+
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.ecAccountName.$error.required && payForm.ecAccountName.$dirty">
+                        Account Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Bank Name</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.bankName"
+                           name="bankName"
+                           ng-model-options="{ debounce: 500}"
+                           required />
+
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.bankName.$error.required && payForm.bankName.$dirty">
+                        Bank Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Bank Account Type</label>
+                <div class="col-sm-4">
+                    <select class="form-control"
+                            ng-model="paymentInfo.bankAccountType"
+                            name="accountType" ng-model-options="{ debounce: 500 }"
+                            required>
+                        <option value=''>- Select Account Type -</option>
+                        <option value="CHECKING">Checking</option>
+                        <option value="BUSINESS CHECKING">Business Checking</option>
+                        <option value="SAVINGS">Savings</option>
                     </select>
 
                     <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.state.$error.required && payForm.state.$dirty">
-                        <trns>State is required.</trns>
+                         ng-if="payForm.accountType.$error.required && payForm.accountType.$dirty">
+                        Account Type is required.
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label" trns>
-                    <trns>Account Zip Code</trns>
-                </label>
+                <label class="col-sm-3 control-label" trns>Bank's ABA Routing Number</label>
                 <div class="col-sm-4">
-                    <input type="text" maxlength="10" class="form-control"
-                           ng-model="paymentInfo.zip"
-                           name="zip"
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.routingNumber"
+                           name="routingnumber"
                            ng-model-options="{ debounce: 500}"
                            required />
 
                     <div class="alert alert-danger" role="alert"
-                         ng-if="payForm.zip.$error.required && payForm.zip.$dirty">
-                        <trns>Zip Code is required.</trns>
+                         ng-if="payForm.routingnumber.$error.required && payForm.routingnumber.$dirty">
+                        Routing Number is required.
                     </div>
                 </div>
             </div>
 
-            <!--CC info-->
-            <div style="margin-bottom:20px" ng-if="paymentInfo.payType=='CC'">
-                <div class="form-group">
-                    <div  class="col-sm-6">
-                <label style="font-size:larger;text-decoration:underline"><trns>Credit Card Information</trns></label>
-                <div >
-                    <img src="/Content/images/visa1_37x23_a.jpg" />
-                    <img src="/Content/images/mc_accpt_023_gif.gif" />
-                    <img src="/Content/images/Discover.jpg" />
-                    <img src="/Content/images/pay_logo_amex.gif" />
-                </div>
-                    </div>
-                </div>
-            <br />
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Credit Card Number</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.ccNumber"
-                               name="ccNumber"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.ccNumber.$error.required && payForm.ccNumber.$dirty">
-                            Credit Card number is required.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Security Code</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.ccCode"
-                               name="ccCode"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.ccCode.$error.required && payForm.ccCode.$dirty">
-                           Security code is required.
-                        </div>
-                    </div>
-                </div>
-               <div class="form-inline">
-                    <label class="col-sm-3 control-label" trns>
-                        Enter Expiration Date
-                    </label>
-                    <br />
-                    <div class="radio-inline" >
-                        <label >
-                            <trns>Month</trns>
-                        </label>
-                        <select class="form-control"
-                                ng-model="paymentInfo.vmonth"
-                                ng-options="month.name for month in globalConstants.monthOptions"
-                                name="month" ng-model-options="{ debounce: 500 }"
-                                required>
-                              <option value=''>- Select Month -</option>
-                        </select>
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.month.$error.required && payForm.month.$dirty">
-                            Month is required.
-                        </div>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <trns>Year</trns>
-                        </label>
-                        <select class="form-control"
-                                ng-model="paymentInfo.vyear"
-                                ng-options="year.name for year in globalConstants.ccYears"
-                                name="year" ng-model-options="{ debounce: 500 }"
-                                required>
-                            <option value=''>- Select Year -</option>
-                        </select>
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.year.$error.required && payForm.year.$dirty">
-                            Month is required.
-                        </div>
-                    </div>
-                   
-                </div>
-                <input ng-model="paymentInfo.expirationDate" ng-value="formatDate()" hidden />
-              
-
-
-               
-            </div>
-            <!--End CC-->
-
-        <!--E-Check info-->
-            <div ng-if="paymentInfo.payType=='EC'">
-                <div class="form-group">
-                    <div class="col-sm-6">
-                        <label style="font-size:larger;text-decoration:underline">E-Check Information</label>
-                        
-                    </div>
-                </div>
-                <br />
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Name On Account</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.ecAccountName"
-                               name="ecAccountName"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.ecAccountName.$error.required && payForm.ecAccountName.$dirty">
-                           Account Name is required.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Bank Name</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.bankName"
-                               name="bankName"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.bankName.$error.required && payForm.bankName.$dirty">
-                            Bank Name is required.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Bank Account Type</label>
-                    <div class="col-sm-4">
-                        <select class="form-control"
-                                ng-model="paymentInfo.bankAccountType"
-                                
-                                name="accountType" ng-model-options="{ debounce: 500 }"
-                                required>
-                            <option value=''>- Select Account Type -</option>
-                            <option value="CHECKING">Checking</option>
-                            <option value="BUSINESS CHECKING">Business Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.accountType.$error.required && payForm.accountType.$dirty">
-                            Account Type is required.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Bank's ABA Routing Number</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.routingNumber"
-                               name="routingnumber"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.routingnumber.$error.required && payForm.routingnumber.$dirty">
-                            Routing Number is required.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" trns>Bank Account Number</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control"
-                               ng-model="paymentInfo.accountNumber"
-                               name="accountnumber"
-                               ng-model-options="{ debounce: 500}"
-                               required />
-
-                        <div class="alert alert-danger" role="alert"
-                             ng-if="payForm.accountnumber.$error.required && payForm.accountnumber.$dirty">
-                            Bank Account Number is required.
-                        </div>
-                    </div>
-                </div>
-               
-               
-
-
-            </div><!--End EC-->
             <div class="form-group">
+                <label class="col-sm-3 control-label" trns>Bank Account Number</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                           ng-model="paymentInfo.accountNumber"
+                           name="accountnumber"
+                           ng-model-options="{ debounce: 500}"
+                           required />
+
+                    <div class="alert alert-danger" role="alert"
+                         ng-if="payForm.accountnumber.$error.required && payForm.accountnumber.$dirty">
+                        Bank Account Number is required.
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div><!--End EC-->
+        <div class="form-group">
             <label class="col-sm-3 control-label" trns>Email Address For Receipt </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control"
                        ng-model="paymentInfo.emailAddress"
                        name="receiptAddress"
                        ng-model-options="{ debounce: 500}"
+                       emailvalidate
                        required />
 
                 <div class="alert alert-danger" role="alert"
-                     ng-if="payForm.receiptAddress.$error.required && payForm.receiptAddress.$dirty">
+                     ng-if="(payForm.receiptAddress.$error.required || payForm.receiptAddress.email.$error.email || payForm.receiptAddress.email.$error.pattern )  && payForm.receiptAddress.$dirty">
                     Email Address for receipt is needed.
                 </div>
             </div>
         </div>
-            <br />
-            <div class="form-group">
+        <br />
+        <div class="form-group">
 
-                <div class="col-sm-8">
+            <div class="col-sm-8">
 
 
 
-                </div>
-                <div class="col-sm-offset-4">
-                 
-                    <button type="submit" ng-click="submitInfo()" ng-disabled="submitting" class="btn admin-button" trns>SUBMIT</button>
-                    <div class="col-sm-offset-7"><img ng-if="submitting" src="/Content/images/spiffygif_30x30.gif" style="text-align: center"  /></div>
-                  
+            </div>
+            <div class="col-sm-offset-4">
 
-                </div>
+                <button type="submit" ng-click="submitInfo()" ng-disabled="submitting" class="btn admin-button" trns>SUBMIT</button>
+                <div class="col-sm-offset-7"><img ng-if="submitting" src="/Content/images/spiffygif_30x30.gif" style="text-align: center" /></div>
+
+
             </div>
         </div>
-         
+    </div>
+
 </form>

@@ -2,6 +2,36 @@
 'use strict';
 
 angular.module('app')
+    //.directive('validNumber', function() {
+    //    return {
+    //        require: '?ngModel',
+    //        link: function(scope, element, attrs, ngModelCtrl) {
+                
+    //            if(!ngModelCtrl) {
+    //                return; 
+    //            }
+
+    //            ngModelCtrl.$parsers.push(function(val) {
+    //                if (angular.isUndefined(val)) {
+    //                    var val = '';
+    //                } 
+    //                var clean = val.replace(/[^0-9.]+/g, '');
+                  
+    //                if (val !== clean) {
+    //                    ngModelCtrl.$setViewValue(clean);
+    //                    ngModelCtrl.$render();
+    //                }
+    //                return clean;
+    //            });
+
+    //            element.bind('keypress', function(event) {
+    //                if(event.keyCode === 32) {
+    //                    event.preventDefault();
+    //                }
+    //            });
+    //        }
+    //    };
+    //})
 .controller('SchoolPayCtrl', ['$rootScope', '$scope', '$state', '$stateParams','globalConstants','NotificationService','OrderDataService','StateDataService','$location',
     function ($rootScope, $scope, $state,$stateParams,globalConstants,NotificationService,OrderDataService,StateDataService, $location) {
 
@@ -135,3 +165,4 @@ OrderDataService.submitSchoolAuthNet(postData).then(function (response) {
             //nothing below
     }  
 ]);
+

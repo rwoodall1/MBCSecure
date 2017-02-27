@@ -35,10 +35,14 @@
                        ng-model="paymentInfo.amountCharged"
                        name="amount"
                        ng-model-options="{ debounce: 500}"
+                      valid-Number
                        required />
-
+                <!--<div class="alert alert-danger" role="alert"
+                     ng-if="payForm.amount.$error.validNumber && payForm.amount.$dirty">
+                    <trns>Enter a numeric amount with no $ signs.</trns>
+                </div>-->
                 <div class="alert alert-danger" role="alert"
-                     ng-if="payForm.amount.$error.required && payForm.amount.$dirty">
+                     ng-if="(payForm.amount.$error.required ||payForm.amount.$error.validNumber) && payForm.amount.$dirty">
                     <trns>Amount is required.</trns>
                 </div>
             </div>
@@ -48,6 +52,8 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control"
                            ng-model="paymentInfo.emailAddress"
+                           onInput="checkLength('emailAddress', 60)"
+                           id="emailAddress"
                            name="emailAddress"
                            ng-model-options="{ debounce: 500}"
                            required />
@@ -63,7 +69,9 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control"
                        ng-model="paymentInfo.invoiceNumber"
+                       onInput="checkLength('invoiceNumber',6)"
                        name="invoiceNumber"
+                       id="invoiceNumber"                   
                        ng-model-options="{ debounce: 500}"
                         />
 
@@ -89,7 +97,9 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control"
                                ng-model="paymentInfo.firstName"
+                                onInput="checkLength('firstName',30)"
                                name="firstName"
+                               id="firstName"
                                ng-model-options="{ debounce: 500}"
                                required />
 
@@ -104,7 +114,9 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control"
                                ng-model="paymentInfo.lastName"
+                               onInput="checkLength('lastName',30)"
                                name="lastName"
+                               id="lastName"
                                ng-model-options="{ debounce: 500}"
                                required />
 
@@ -119,6 +131,8 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control"
                                ng-model="paymentInfo.ccNumber"
+                                onInput="checkLength('ccNumber',20)"
+                               id="ccNumber"
                                name="ccNumber"
                                ng-model-options="{ debounce: 500}"
                                required />
@@ -135,6 +149,8 @@
                         <input type="text" class="form-control"
                                ng-model="paymentInfo.ccCode"
                                name="ccCode"
+                                onInput="checkLength('ccCode',3)"
+                               id="ccCode"
                                ng-model-options="{ debounce: 500}"
                                required />
 
@@ -221,7 +237,7 @@
                         <input type="text" class="form-control"
                                ng-model="paymentInfo.bankName"
                                name="bankName"
-                               ng-model-options="{ debounce: 500}"
+                              ng-model-options="{ debounce: 500}"
                                required />
 
                         <div class="alert alert-danger" role="alert"
@@ -303,6 +319,24 @@
 
                 </div>
             </div>
-        </div>
-         
+       
+        <script type="text/javascript">
+            function checkLength(f, l) {
+                
+                    //f is id of field and l is max lenght
+                    var fieldval = document.getElementById(f).value;
+                    var fieldLength = fieldval.length;
+
+
+                    if (fieldLength <= l) {
+                      
+                        return true;
+                    }
+                    else {
+                        var str = document.getElementById(f).value;
+                        str = str.substring(0, str.length - 1);
+                        document.getElementById(f).value = str;
+                    }
+                }
+            </script>
 </form>

@@ -8,7 +8,7 @@ angular.module('app')
         initialize();
 
         function initialize() {
-           
+         
             $scope.hasLoaded = false;
             $scope.submitting = false;
             $scope.orderID = $stateParams.orderid;
@@ -90,7 +90,7 @@ angular.module('app')
    
            if($scope.form.$valid){
                 if ($scope.paymentInfo.payType == 'CC') {
-                  
+                  alert('good')
 
                     var postData = {
                         Method: $scope.paymentInfo.payType,

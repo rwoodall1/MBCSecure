@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations;
 namespace ApiBindingModels
 {
     public class AuthNetBindingModel
@@ -22,6 +22,7 @@ namespace ApiBindingModels
         public string BankAccountNumber { get; set; }
         public string Amount { get; set; }//amount to charge
         public string Description { get; set; }//misc data
+        [Required(ErrorMessage = "Schcode is missing and is required.")]
         public string CustId { get; set; }
         public string Schname { get; set; }
         public string FirstName { get; set; }

@@ -128,7 +128,7 @@ namespace Services
                     Returnresponse_array.Email = response_array[23];
                     Returnresponse_array.CardNum = response_array[50];
                     Returnresponse_array.CardType = response_array[51];
-                    //will fail if submission faisl and there are not enough elements
+                    //will fail if submission fails and there are not enough elements
                 }
                 catch (Exception ex)
                 {
