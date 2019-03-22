@@ -1,0 +1,143 @@
+﻿
+<h1 trns>{{schname}} School Pay Site</h1>
+<div ng-if="!hasLoaded"><img src="/Content/images/spiffygif_30x30.gif" style="text-align: center" ng-hide="hasLoaded" /></div>
+
+<form role="form" class="form-horizontal" name="receivingForm" novalidate>
+	<input ng-model="form" ng-init="form=receivingForm" hidden>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Job#</label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="xtra.jobno"
+				   name="jobno"
+				   ng-blur="getInfo(xtra.jobno)"
+				   required />
+
+			<div class="alert alert-danger" role="alert"
+				 ng-if="receivingForm.jobno.$error.required  && payForm.jobno.$dirty">
+				<trns>Job number is required.</trns>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>School Code </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.schcode"
+				   name="schcode"
+				   required />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>School Name </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.schname"
+				   name="schname" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Contract Year </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.contryear"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Invoice Number </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.invno"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Room </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.r"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Shelf </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.r"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Rack </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.r"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" trns>Quantity </label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control"
+				   ng-model="extra.exonhand"
+				   name="invno" />
+
+			<!--<div class="alert alert-danger" role="alert"
+				 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+				<trns>Only 6 digits are allowed.</trns>
+			</div>-->
+		</div>
+	</div>
+
+
+	<br />
+	<div class="form-group">
+
+		<div class="col-sm-8">
+
+
+
+		</div>
+		<div class="col-sm-offset-4">
+
+			<button type="submit" ng-click="submit()" ng-disabled="submitting" class="btn admin-button" trns>SUBMIT</button>
+			<div ng-if="!hasLoaded"><img src="/Content/images/spiffygif_30x30.gif" style="text-align: center" ng-hide="submitting" /></div>
+		
+
+		</div>
+	</div>
+
+</form>

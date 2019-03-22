@@ -46,7 +46,7 @@ angular.module('app')
            
             $scope.globalConstants = globalConstants;
             $scope.paymentInfo={};
-          
+            $scope.paymentInfo.payType='CC'
             $scope.paymentInfo.itemTotal = 0.00
             $scope.submitInfo = submitInfo;
             $scope.formatDate = formatDate;
@@ -59,9 +59,9 @@ angular.module('app')
             
         }
         function test() {
-            console.log($scope.globalConstants.ccYears)
-            console.log($scope.paymentInfo.vmonth)
-            console.log($scope.paymentInfo.vyear);
+            //console.log($scope.globalConstants.ccYears)
+            //console.log($scope.paymentInfo.vmonth)
+            //console.log($scope.paymentInfo.vyear);
         }
         function formatDate(){
       

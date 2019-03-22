@@ -6,7 +6,7 @@
         <input ng-model="form" ng-init="form=payForm" hidden> 
       
 
-            <div class="form-group col-md-12">
+            <!--<div class="form-group col-md-12">
                 <div class="radio-inline">
                     <label>
                         <input type="radio" name="payType"
@@ -27,7 +27,7 @@
                    Select a payment type.
                 </div>
 
-            </div>
+            </div>-->
         <div class="form-group">
             <label class="col-sm-3 control-label" trns>Amount To Be Charged</label>
             <div class="col-sm-4">
@@ -71,10 +71,14 @@
                        ng-model="paymentInfo.invoiceNumber"
                        onInput="checkLength('invoiceNumber',6)"
                        name="invoiceNumber"
-                       id="invoiceNumber"                   
-                       ng-model-options="{ debounce: 500}"
+	                   maxsixnumbers
+                       id="invoiceNumber"
+					   ng-model-options="{ debounce: 500}"
                         />
-
+				<div class="alert alert-danger" role="alert"
+					 ng-if="payForm.invoiceNumber.$error.invalid && payForm.invoiceNumber.$dirty">
+					<trns>Only 6 digits are allowed.</trns>
+				</div>
                </div>
         </div>
 

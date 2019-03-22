@@ -480,7 +480,24 @@ angular.module('app')
             ctrl.$validators.invalid = checkErrors;
         }
     };
-})
+	})
+	.directive('maxsixnumbers', function () {
+		return {
+			require: 'ngModel',
+			link: function (scope, elm, attrs, ctrl) {
+				var CCREGEX = new RegExp("^[0-9]{6}$");
+
+				var checkErrors = function (modelValue, viewValue) {
+					if (CCREGEX.test(viewValue)) {
+						return true;
+					}
+					return false;
+				};
+
+				ctrl.$validators.invalid = checkErrors;
+			}
+		};
+	})
 .directive('last4ssnvalidation', function () {
     return {
         require: 'ngModel',

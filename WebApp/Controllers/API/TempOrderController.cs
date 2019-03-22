@@ -104,7 +104,7 @@ namespace WebApp.Controllers.API {
 
             var processingResult = new ServiceProcessingResult<List<OrderBillingBindingModel>> { IsSuccessful = true };
           
-                var sqlQuery = "SELECT distinct Schcode,Schname,Schinvoicenumber,Emailaddress,Studentfname,Studentlname,Sum(itemtotal) as Total FROM `temporders` o where Orderid =@OrderId";
+                var sqlQuery = "SELECT distinct Schcode,Schname,Schinvoicenumber,Emailaddress,Studentfname,Studentlname,SalesTax,Sum(itemtotal) as Total FROM `temporders` o where Orderid =@OrderId";
                 MySqlParameter[] parameters = new MySqlParameter[] { new MySqlParameter("@OrderId", orderid) };
                 var sqlQueryService = new SQLQuery();
                 var orderResult = await sqlQueryService.ExecuteReaderAsync<OrderBillingBindingModel>(CommandType.Text, sqlQuery, parameters);
@@ -118,7 +118,11 @@ namespace WebApp.Controllers.API {
 
                 if (orderResult.Data!=null)
                 {
-                    processingResult.Data = (List<OrderBillingBindingModel>)orderResult.Data;
+                var vResult = (List<OrderBillingBindingModel>)orderResult.Data;
+                var vTaxRate = vResult[0].SalesTax;
+                var vTotal = vResult[0].Total + (vResult[0].Total * vTaxRate);
+                 vResult[0].Total = vTotal;
+                 processingResult.Data = vResult; ;
                     processingResult.IsSuccessful = true;
                 }
                 else

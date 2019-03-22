@@ -26,6 +26,7 @@ namespace ApiBindingModels
         public decimal ItemTotal { get; set; }
         public string Schname { get; set; }
         public string Yr { get; set; }
+        public DateTime Adcuto { get; set; }
         public UInt32 Icon1 { get; set; }
         public UInt32 Icon2 { get; set; }
         public UInt32 Icon3 { get; set; }
@@ -38,6 +39,7 @@ namespace ApiBindingModels
         public string Caption2 { get; set; }
         public string Caption3 { get; set; }
         public string Caption4 { get; set; }
+        public decimal SalesTax { get; set; }
 
     }
     public class OrderBillingBindingModel
@@ -53,6 +55,7 @@ namespace ApiBindingModels
         public string CardNumber { get; set; }
         public string CardCode { get; set; }
         public string ExpirationDate { get; set; }
+        public decimal SalesTax { get; set; }
 
         public decimal Total { get; set; }
     }
@@ -68,7 +71,7 @@ namespace ApiBindingModels
         public string PayType { get; set; }
         public string TransId { get; set; }
         public string AuthCode { get; set; }
-    
+     public decimal TaxPaid { get; set; }
         public string PayerFname { get; set; }
         public string PayerLname { get; set; }
        

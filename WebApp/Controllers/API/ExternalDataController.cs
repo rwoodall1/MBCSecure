@@ -60,12 +60,13 @@ namespace WebApp.Controllers.API
                 processingResult.Error = new ProcessingError("Not authorized.", "Not authorized.", false);
                 return Ok(processingResult);
             }
-
-            
-           // using (OleDbConnection Conn = new OleDbConnection("Provider = VFPOLEDB.1; Data Source = E:\\MbcData\\MBC5"))
-            using (OleDbConnection Conn = new OleDbConnection("Provider = VFPOLEDB.1; Data Source = M:\\MBC5"))
+            string constr = ConfigurationManager.AppSettings["OleConnection"].ToString();
+            using (OleDbConnection Conn = new OleDbConnection(constr))//10.37.32.50
+                                                                      
+            //using (OleDbConnection Conn = new OleDbConnection("Provider = VFPOLEDB.1; Data Source = E:\\MbcData\\MBC5"))
+           // using (OleDbConnection Conn = new OleDbConnection("Provider = VFPOLEDB.1; Data Source = M:\\MBC5"))
             {
-                using(OleDbCommand cmd=new OleDbCommand("SELECT CUST.Schcode as MemorybookCode,CUST.OracleCode AS OracleNumber ,CUST.Contryear As ContractYear,Cust.contdate As ContractLoadDate,Cust.prevpublisher AS Publisher,CUST.stage As Staging,Quotes.nopages As Pages,Quotes.nocopies As Copies,Quotes.fbkprc As BookPrice, Quotes.sbtot As SubTotal, Produtn.cstat As Status from CUST INNER JOIN QUOTES ON Cust.schcode = Quotes.schcode INNER JOIN (Select Quotes.Schcode, MAX(QUOTES.INVNO) AS maxinvno FROM quotes GROUP BY quotes.schcode ORDER BY schcode ) tmp ON Quotes.schcode = tmp.schcode AND Quotes.invno = tmp.maxinvno INNER JOIN produtn ON Quotes.invno = produtn.invno WHERE Cust.Contryear >= '16' Or Cust.Contryear='17' Or Cust.contryear='18'  ORDER BY CUST.OracleCode", Conn))
+                using(OleDbCommand cmd=new OleDbCommand("SELECT CUST.Schcode as MemorybookCode, CUST.OracleCode AS OracleNumber,CUST.Contryear As ContractYear,Cust.contdate As ContractLoadDate,Cust.prevpublisher AS Publisher,CUST.stage As Staging,Quotes.nopages As Pages,Quotes.nocopies As Copies,Quotes.fbkprc As BookPrice, Quotes.sbtot As SubTotal,CsNames.Id as CSR,Quotes.invno AS InvoiceNumber,Quotes.agreedte AS AgreementRecDate,Quotes.onlinecuto As OnlinePayCloseOutDate ,Quotes.agreerec AS Agreementreceived ,Produtn.cstat As Status,Produtn.dedayin AS DeadLineDayIn,Produtn.shpdate AS Shipdate,Produtn.kitrecvd AS KitReceivedDate,Produtn.jobno AS JobNo,Produtn.screcv AS SpecCvrRecDate,Produtn.covertype AS CoverType from CUST LEFT JOIN Csnames ON Cust.csrep = CSNames.Source INNER JOIN QUOTES ON Cust.schcode = Quotes.schcode INNER JOIN (Select Quotes.Schcode, MAX(QUOTES.INVNO) AS maxinvno FROM quotes GROUP BY quotes.schcode ORDER BY schcode ) tmp ON Quotes.schcode = tmp.schcode AND Quotes.invno = tmp.maxinvno INNER JOIN produtn ON Quotes.invno = produtn.invno WHERE Cust.Contryear >= '16' Or Cust.Contryear = '17' Or Cust.contryear = '18' ORDER BY CUST.OracleCode", Conn))
                     
                 {
                     try
@@ -92,16 +93,26 @@ namespace WebApp.Controllers.API
                                     MemorybookCode = row["MemorybookCode"].ToString().Trim(),
                                     OracleNumber = row["OracleNumber"].ToString().Trim(),
                                     ContractYear = row["ContractYear"].ToString().Trim(),
-                                    ContractLoadDate =((DateTime) row["ContractLoadDate"]).ToString("d"),
+                                    ContractLoadDate = ((DateTime)row["ContractLoadDate"]).ToString("d"),
                                     Staging = row["Staging"].ToString().Trim(),
                                     Publisher = row["Publisher"].ToString().Trim(),
                                     Copies = row["Copies"].ToString().Trim(),
-                                    Pages=row["Pages"].ToString().Trim(),
+                                    Pages = row["Pages"].ToString().Trim(),
                                     BookPrice = row["BookPrice"].ToString().Trim(),
                                     SubTotal = row["SubTotal"].ToString().Trim(),
                                     Status = row["Status"].ToString().Trim(),
-                                    RowNumber = rownum.ToString()
-                                  };
+                                    CSR = row["CSR"].ToString().Trim(),
+                                    Shipdate = ((DateTime) row["Shipdate"]).ToString("d"),
+                                    RowNumber = rownum.ToString(),
+                                    InvoiceNumber=((decimal) row["InvoiceNumber"]).ToString(),
+                                    AgreementReceived= (bool)row["Agreementreceived"],
+                                    AgreementRecDate= ((DateTime)row["AgreementRecDate"]).ToString("d"),
+                                    KitReceivedDate = ((DateTime)row["KitReceivedDate"]).ToString("d"),
+                                    JobNo= row["JobNo"].ToString().Trim(),
+                                    SpecCvrRecDate= ((DateTime)row["SpecCvrRecDate"]).ToString("d"),
+                                    CoverType= row["CoverType"].ToString() == "SPE" ? "SPE":"STAN"
+
+                                };
                                 lCust.Add(rec);
 
                             }
@@ -127,10 +138,6 @@ namespace WebApp.Controllers.API
                     {
                         Conn.Close();
                     }
-
-
-
-
 
                 }
 

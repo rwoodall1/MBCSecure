@@ -1,9 +1,9 @@
-﻿/// <reference path="school.js" />
+﻿///// <reference path="school.js" />
 'use strict';
 
 angular.module('app')
-.controller('ReceiptCtrl', ['$rootScope', '$scope', '$state', '$stateParams','globalConstants','NotificationService','OrderDataService', '$location',
-    function ($rootScope, $scope, $state,$stateParams,globalConstants,NotificationService,OrderDataService, $location) {
+.controller('ReceiptCtrl', ['$rootScope', '$scope', '$state', '$stateParams','globalConstants','NotificationService','$window','OrderDataService', '$location',
+	function ($rootScope, $scope, $state, $stateParams, globalConstants, NotificationService,$window,OrderDataService, $location) {
 
         initialize();
 
@@ -48,7 +48,10 @@ angular.module('app')
                    return;
                }
                 $scope.hasLoaded = true;
-                $scope.order = response.data;
+				$scope.order = response.data;
+				
+				$window.ga('send', 'event', 'Customer Receipt', angular.toJson($scope.order), 'Reciept');
+				//$window.ga('send', 'event', 'ParentPay', 'Checkout Receipt', 'Receipt', $scope.order);
                 var items = $scope.order.items;
                 items.forEach(function(item){
                     switch(item.bookType){
@@ -63,8 +66,7 @@ angular.module('app')
                     }
                 })
 
-      
-                   console.log($scope.order)
+        
                 })
             }
       

@@ -274,6 +274,8 @@
     <Content Include="app\common\notification.js" />
     <Content Include="app\common\services.js" />
     <Content Include="app\index.html" />
+    <Content Include="app\main\AnnualReceiving\annualReceiving.html" />
+    <Content Include="app\main\AnnualReceiving\annualReceiving.js" />
     <Content Include="app\main\mbc\parentPay.html" />
     <Content Include="app\main\mbc\schoolreceipt.html" />
     <Content Include="app\main\mbc\schoolreceipt.js" />

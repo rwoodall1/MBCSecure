@@ -161,7 +161,21 @@ angular.module('app', [
     showErrorsConfigProvider.showSuccess(true);
 }])
 
-.run(['$rootScope', '$templateCache', '$state','$stateParams', 'globalConstants', 'NotificationService', 'UtilService', '$window','$location', function ($rootScope, $templateCache, $state,$stateParams, globalConstants, NotificationService, UtilService, $window,$location) {
+	.run(['$rootScope', '$templateCache', '$state', '$stateParams', 'globalConstants', 'NotificationService', 'UtilService', '$window', '$location', function ($rootScope, $templateCache, $state, $stateParams, globalConstants, NotificationService, UtilService, $window, $location) {
+		$rootScope.$on('$stateChangeSuccess', function (event) {
+			$window.ga('send', 'pageview', $location.path());
+		});
+
+		$window.ga = $window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+		//MBC UA-2450439-32
+		//UA-91833886-2
+		$window.ga('create', 'UA-2450439-32', 'none'); 
+		$window.ga('require', 'eventTracker');
+		$window.ga('require', 'ecommerce', 'ecommerce.js');
+		$window.ga('require', 'outboundLinkTracker', {
+			events: ['click', 'contextmenu']
+			, linkSelector: '.GA-AT-track-click'
+		});
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     UtilService.setServerVars().then(function (response) {

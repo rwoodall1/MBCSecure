@@ -49,14 +49,9 @@ angular.module('app')
                }
                 $scope.hasLoaded = true;
                 $scope.payment = response.data;
-               
-              
-      
-                console.log($scope.payment)
+                //console.log($scope.payment)
                 })
             }
-      
-
 
         function showPrintPopup() {
             var newWin = open('url', 'Submission');
@@ -66,8 +61,6 @@ angular.module('app')
             newWin.document.write(myHTML);
             newWin.document.close();
         }
-
-
-            //nothing below
+      //nothing below
     }  
 ]);

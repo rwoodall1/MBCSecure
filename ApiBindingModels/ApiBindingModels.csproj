@@ -92,7 +92,7 @@
   <ItemGroup>
     <Compile Include="BindingModelsConverter.cs" />
     <Compile Include="DomainModelsConverter.cs" />
-    <Compile Include="TestBindingModel.cs" />
+    <Compile Include="SalesForceBindingModel.cs" />
     <Compile Include="InvoiceBindingModel.cs" />
     <Compile Include="AuthNetBindingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

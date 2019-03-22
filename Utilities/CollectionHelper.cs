@@ -141,8 +141,16 @@ namespace Utilities {
                         prop.SetValue(entity, date, null);
                     }
                 }
-            } else if (prop.PropertyType == typeof(decimal)) {
-                prop.SetValue(entity, decimal.Parse(value.ToString()), null);
+            } else if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(Nullable<decimal>)) {
+                if (value == null || value == DBNull.Value)
+                {
+                    prop.SetValue(entity, null, null);
+                }
+                else
+                {
+                    prop.SetValue(entity, decimal.Parse(value.ToString()), null);
+                }
+               // prop.SetValue(entity, decimal.Parse(value.ToString()), null);
             } else if (prop.PropertyType == typeof(bool)) {
              
                 prop.SetValue(entity,bool.Parse(value.ToString()),null);

@@ -24,6 +24,7 @@ using Exceptionless.Models;
 using System.Net.Mail;
 namespace WebApp.Controllers.API
 {
+
     [RoutePrefix("api/order")]
     public class OrderController : BaseApiController
     {
@@ -36,11 +37,11 @@ namespace WebApp.Controllers.API
             var processingResult = new ServiceProcessingResult<List<OrderBindingModel>> { IsSuccessful = true };
             //Get the order first thing to make sure we have it.
             List<OrderBindingModel> Orders = new List<OrderBindingModel>();
-           
+            decimal vSalesTax = 0;
             try
             {
-                var sqlQuery = "SELECT Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,Orddate,ItemTotal,Schname,Yr,Icon1,Icon2,Icon3,Icon4,Josicon1,Josicon2,Josicon3,Josicon4 FROM temporders where orderid=@OrderId";
-         
+                var sqlQuery = "SELECT Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,Orddate,ItemTotal,Schname,Yr,Icon1,Icon2,Icon3,Icon4,Josicon1,Josicon2,Josicon3,Josicon4,SalesTax FROM temporders where orderid=@OrderId";
+
                 MySqlParameter[] parameters = new MySqlParameter[] { new MySqlParameter("@OrderId", model.InvoiceNumber) };
                 var sqlQueryService = new SQLQuery();
                 var orderResult = await sqlQueryService.ExecuteReaderAsync<OrderBindingModel>(CommandType.Text, sqlQuery, parameters);
@@ -61,6 +62,7 @@ namespace WebApp.Controllers.API
 
 
                 Orders = (List<OrderBindingModel>)orderResult.Data;
+                vSalesTax = Orders[0].SalesTax;
 
             }
             catch (Exception ex)
@@ -76,6 +78,7 @@ namespace WebApp.Controllers.API
             //----------------------------------------------------------------------
 
             var authNetService = new AuthNetService();
+
             var result = await authNetService.SubmittAsync(model);
             if (!result.IsSuccessful)
             {
@@ -88,6 +91,7 @@ namespace WebApp.Controllers.API
             AuthNetResponse AuthNetData = new AuthNetResponse();
             AuthNetData = result.Data;
             if (!AuthNetData.Approved)
+
             {
                 processingResult.IsSuccessful = false;
                 processingResult.Error = new ProcessingError("Your payment to Authorized.net failed for the following reason:" + AuthNetData.Message, "Your payment to Authorized.net failed for the following reason:" + AuthNetData.Message, true, false);
@@ -95,9 +99,16 @@ namespace WebApp.Controllers.API
             }//not approved
             else//Is Approved
             {
+                decimal taxableAmount = 0;
                 foreach (var order in Orders)
                 {
-                    var sqlQuery1 = "INSERT INTO Orders (grade,booktype,teacher,perstext1,studentfname,studentlname,emailaddress,schcode,itemamount,itemqty,schinvoicenumber,orderid,orddate,paytype,itemtotal,schname,parentpayment,yr,icon1,icon2,icon3,icon4,josicon1,josicon2,josicon3,josicon4) VALUES(@grade,@booktype,@teacher,@perstext1,@studentfname,@studentlname,@emailaddress,@schcode,@itemamount,@itemqty,@schinvoicenumber,@orderid,@orddate,@paytype,@itemtotal,@schname,@parentpayment,@yr,@icon1,@icon2,@icon3,@icon4,@josicon1,@josicon2,@josicon3,@josicon4)";
+                    if (order.BookType.Contains("Ad"))
+                    {
+
+                    }
+                    else { taxableAmount += order.ItemTotal; }
+                   
+                    var sqlQuery1 = "INSERT INTO Orders (grade,booktype,teacher,perstext1,studentfname,studentlname,emailaddress,schcode,itemamount,itemqty,schinvoicenumber,orderid,orddate,paytype,itemtotal,schname,parentpayment,yr,icon1,icon2,icon3,icon4,josicon1,josicon2,josicon3,josicon4,SalesTax) VALUES(@grade,@booktype,@teacher,@perstext1,@studentfname,@studentlname,@emailaddress,@schcode,@itemamount,@itemqty,@schinvoicenumber,@orderid,@orddate,@paytype,@itemtotal,@schname,@parentpayment,@yr,@icon1,@icon2,@icon3,@icon4,@josicon1,@josicon2,@josicon3,@josicon4,@SalesTax)";
 
                     MySqlParameter[] parameters = new MySqlParameter[] {
 
@@ -127,6 +138,7 @@ namespace WebApp.Controllers.API
                     new MySqlParameter("@josicon2",order.Josicon2),
                     new MySqlParameter("@josicon3",order.Josicon3),
                     new MySqlParameter("@josicon4",order.Josicon4),
+                    new MySqlParameter("@SalesTax",order.SalesTax),
 
                 };
                     try
@@ -230,8 +242,22 @@ namespace WebApp.Controllers.API
                 }//endforeach
                  //,  
                  //insert payment even if order failed
-                try {
-                    var sqlQuery = "INSERT INTO Payment (orderid,schname,schcode,custemail,ddate,poamt,paytype,ccnum,invno,parentpay,payerfname,payerlname,addr,city,state,zip,transid,authcode) VALUES(@orderid,@schname,@schcode,@custemail,@ddate,@poamt,@paytype,@ccnum,@invno,@parentpay,@payerfname,@payerlname,@addr,@city,@state,@zip,@transid,@authcode)";
+                try
+                {
+                    //decimal vAmount;
+                    decimal vTax = 0;
+                    //if (decimal.TryParse(model.Amount, out vAmount))
+                    //{
+                    if (taxableAmount > 0)
+                    {
+                        vTax = taxableAmount - (taxableAmount / (1 + vSalesTax));
+                        vTax = Math.Round(vTax, 2, MidpointRounding.AwayFromZero);
+                    }
+                    // }
+                    else { vSalesTax = 0; }
+
+
+                    var sqlQuery = "INSERT INTO Payment (orderid,schname,schcode,custemail,ddate,poamt,paytype,ccnum,invno,parentpay,payerfname,payerlname,addr,city,state,zip,transid,authcode,tax) VALUES(@orderid,@schname,@schcode,@custemail,@ddate,@poamt,@paytype,@ccnum,@invno,@parentpay,@payerfname,@payerlname,@addr,@city,@state,@zip,@transid,@authcode,@tax)";
                     MySqlParameter[] parameters1 = new MySqlParameter[] {
 
                     new MySqlParameter("@orderid",model.InvoiceNumber),
@@ -239,11 +265,15 @@ namespace WebApp.Controllers.API
                     new MySqlParameter("@ddate",DateTime.Now),
                     new MySqlParameter("@poamt",model.Amount),
                     new MySqlParameter("@paytype",model.Method),
+                    //new MySqlParameter("@transid","1111"),
+                    //new MySqlParameter("@authcode","dddd"),
                     new MySqlParameter("@transid",AuthNetData.TransId),
                     new MySqlParameter("@authcode",AuthNetData.AuthCode),
+
                     new MySqlParameter("@ccnum",model.Cardnum==null?"":model.Cardnum.Substring(model.Cardnum.Length-3)),
                     new MySqlParameter("@invno",Orders[0].Schinvoicenumber),
                     new MySqlParameter("@schname",Orders[0].Schname),
+                    //new MySqlParameter("@schcode","038752"),
                     new MySqlParameter("@schcode",AuthNetData.Custid),
                     new MySqlParameter("@parentpay",1),
                     new MySqlParameter("@payerfname",model.FirstName),
@@ -251,37 +281,39 @@ namespace WebApp.Controllers.API
                     new MySqlParameter("@addr",model.Address),
                     new MySqlParameter("@city",model.City),
                     new MySqlParameter("@state",model.State.TrimEnd()),
-                    new MySqlParameter("@zip",model.Zip)
+                    new MySqlParameter("@zip",model.Zip),
+                    new MySqlParameter("@tax",vTax)
 
                 };
                     var sqlQueryService1 = new SQLQuery();
                     var payResult = await sqlQueryService1.ExecuteNonQueryAsync(CommandType.Text, sqlQuery, parameters1);
-                
-                if (!payResult.IsSuccessful)
-                {
-                    //fail it because we don't have the payment to create a receipt.
-                    processingResult.IsSuccessful = false;
-                    processingResult.Error = new ProcessingError("Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, "Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, true, false);
-                    ExceptionlessClient.Default.CreateLog(typeof(OrderController).FullName, "Error inserting  parent payment.", "Error").AddObject(model).AddObject(AuthNetData);
-                    return Ok(processingResult);
 
-                }
-                EmailReceipt(model.InvoiceNumber);
+                    if (!payResult.IsSuccessful)
+                    {
+                        //fail it because we don't have the payment to create a receipt.
+                        processingResult.IsSuccessful = false;
+                        processingResult.Error = new ProcessingError("Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, "Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, true, false);
+                        ExceptionlessClient.Default.CreateLog(typeof(OrderController).FullName, "Error inserting  parent payment.", "Error").AddObject(model).AddObject(AuthNetData);
+                        return Ok(processingResult);
+
+                    }
+                    EmailReceipt(model.InvoiceNumber);
+
                 }
                 catch (Exception ex)
                 {
-                ex.ToExceptionless()
-                    .SetMessage("Error inserting payment.")
-                    .AddTags("Insert Payment Error")
-                    .AddObject(model)
-                    .AddObject(AuthNetData)
-                    .Submit();
-                processingResult.IsSuccessful = false;
-                processingResult.Error = new ProcessingError("Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, "Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, true, false);
+                    ex.ToExceptionless()
+                        .SetMessage("Error inserting payment.")
+                        .AddTags("Insert Payment Error")
+                        .AddObject(model)
+                        .AddObject(AuthNetData)
+                        .Submit();
+                    processingResult.IsSuccessful = false;
+                    processingResult.Error = new ProcessingError("Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, "Your payment was made but an error occurred creating your receipt. To obtain a receipt contact your school adviser with this tranasaction id:" + AuthNetData.TransId, true, false);
 
-                return Ok(processingResult);
+                    return Ok(processingResult);
 
-            }
+                }
 
             }// End Approved
             return Ok(processingResult);
@@ -317,7 +349,8 @@ namespace WebApp.Controllers.API
                 fname = model.BankAccName.Substring(0, model.BankAccName.IndexOf(" ") - 1);
                 lname = model.BankAccName.Substring(model.BankAccName.IndexOf(" ") + 1);
             }
-            else {
+            else
+            {
                 fname = model.FirstName;
                 lname = model.LastName;
             }
@@ -343,12 +376,17 @@ namespace WebApp.Controllers.API
             var payResult = await sqlQueryService.ExecuteNonQueryAsync(CommandType.Text, sqlQuery, parameters);
             if (!payResult.IsSuccessful)
             {
+                using (StreamWriter _testData2 = new StreamWriter(System.Web.HttpContext.Current.Server.MapPath("~/data.txt"), true))
+                {
+                    _testData2.WriteLine(payResult.Error.UserHelp); // Write the file.
+
+                }
                 processingResult.IsSuccessful = false;
                 processingResult.Error = new ProcessingError("Your payment was made but an error occurred creating your receipt. To obtain a receipt contact Memory Book with this tranasaction id:" + AuthNetData.TransId, "Your payment was made but an error occurred creating your receipt. To obtain a receipt contact Memory Book with this tranasaction id:" + AuthNetData.TransId, true, false);
                 ExceptionlessClient.Default.CreateLog(typeof(OrderController).FullName, "Error inserting school payment.", "Error").AddObject(model).AddObject(AuthNetData);
                 return Ok(processingResult);
 
-               
+
 
             }
             EmailSchoolReceipt(AuthNetData.TransId);
@@ -411,7 +449,7 @@ namespace WebApp.Controllers.API
 
                 var emailhelper = new Utilities.EmailHelper();
 
-                emailhelper.SendEmail("Receipt for a School Payment to Memory Book Company (Transaction Id " + Receipt.TransId + ")  Using " + Receipt.PayType + "  " + DateTime.Now.ToShortDateString(), Receipt.CustomerEmail, "", "authnet@memorybook.com", body, Utils.EmailType.Mbc);
+                emailhelper.SendEmail("Receipt for a School Payment to Memory Book Company (Transaction Id " + Receipt.TransId + ")  Using " + Receipt.PayType + "  " + DateTime.Now.ToShortDateString(), Receipt.CustomerEmail, "", "hedwards@printlynx.com", body, Utils.EmailType.Mbc);
 
 
             }
@@ -433,7 +471,8 @@ namespace WebApp.Controllers.API
             ReceiptBindingModel Receipt = new ReceiptBindingModel();
             try
             {
-                var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,Orddate,ItemTotal,Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join lookup l1 On l1.ivalue=Orders.icon1 Left Join lookup l2 on l2.ivalue=Orders.icon2 Left Join lookup l3 on l3.ivalue=Orders.icon3  Left Join lookup l4 on l4.ivalue=Orders.icon4  where orderid=@OrderId";
+                var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Orders.SalesTax,Studentlname,Emailaddress,Orders.Schcode,ItemAmount,Itemqty,Schinvoicenumber,Adcuto,Orddate,ItemTotal,Orders.Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join InvoiceInfo I ON I.Invno = Orders.schinvoicenumber Left Join lookup l1 On l1.ivalue = Orders.icon1 Left Join lookup l2 on l2.ivalue = Orders.icon2 Left Join lookup l3 on l3.ivalue = Orders.icon3  Left Join lookup l4 on l4.ivalue = Orders.icon4    where orderid = @OrderId";
+                //var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,Orddate,ItemTotal,Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join lookup l1 On l1.ivalue=Orders.icon1 Left Join lookup l2 on l2.ivalue=Orders.icon2 Left Join lookup l3 on l3.ivalue=Orders.icon3  Left Join lookup l4 on l4.ivalue=Orders.icon4  where orderid=@OrderId";
                 MySqlParameter[] parameters = new MySqlParameter[] { new MySqlParameter("@OrderId", orderid) };
                 var sqlQueryService = new SQLQuery();
                 var orderResult = sqlQueryService.ExecuteReaderAsync<OrderBindingModel>(CommandType.Text, sqlQuery, parameters);
@@ -445,6 +484,8 @@ namespace WebApp.Controllers.API
                 }
                 Receipt.Items = (List<OrderBindingModel>)orderResult.Result.Data;
                 var hasAd = false;
+                decimal vtaxrate = Receipt.Items[0].SalesTax;
+
                 foreach (var order in Receipt.Items)
                 {
                     switch (order.BookType)
@@ -491,7 +532,7 @@ namespace WebApp.Controllers.API
                 Receipt.CustomerEmail = payment.CustEmail;
                 Receipt.OrderDate = payment.Ddate;
                 Receipt.Payment = payment.Poamt;
-
+                var vPaidTax = Receipt.Payment - (Receipt.Payment / (1 + vtaxrate));
                 var body = "";
 
                 var hbody = "<div class='form-group col-md-12'><label style = 'font-size:x-large' ><strong>Thank you for your payment</strong></label></div>"
@@ -504,11 +545,12 @@ namespace WebApp.Controllers.API
 
                + "<div class='form-group'><div class='col-sm-6'><strong>Transaction Id: </strong>" + payment.TransId + "</div></div>"
                + "<div class='form-group'><div class='col-sm-6'><strong>Authorization Code: </strong>" + payment.AuthCode + "</div></div>"
+               + "<div class='form-group'><div class='col-sm-6'><strong>Tax: </strong>" + vPaidTax + "</div></div>"
                + "<div class='form-group'><div class='col-sm-6'><strong>Amount Paid: </strong>$" + payment.Poamt + "</div> </div><div></div>";
                 body = hbody;
                 if (hasAd)
                 {
-                    body = body + "<div style = 'font-size:larger' ><strong ><a href = 'http://mbcadpages.v5.pressero.com/' target = '_blank'> You have ordered an ad. Click here to configure your ad. (http://mbcadpages.v5.pressero.com/)</a></strong></div>";
+                    body = body + "<div style = 'font-size:larger' ><strong ><a href = 'http://mbcadpages.v5.pressero.com/' target = '_blank'> You have ordered an ad. Click here to configure your ad. (http://mbcadpages.v5.pressero.com/)</a></strong></div><div ng-if='hasAdd'>Your ad  must be configured and submitted by <strong style='color: red'>" + Receipt.Items[0].Adcuto.ToShortDateString() + "</strong></div>";
                 }
                 body = body + "<div style='color: red; margin - bottom:5px'><i>If you have questions about your order contact your school's yearbook advisor. </i></div><hr>";
                 foreach (var order in Receipt.Items)
@@ -547,7 +589,7 @@ namespace WebApp.Controllers.API
 
 
                 var emailhelper = new Utilities.EmailHelper();
-               
+
                 emailhelper.SendEmail("Receipt for a Parent Payment to Memory Book Company (Transaction Id " + Receipt.TransId + ")  Using " + Receipt.PayType + "  " + DateTime.Now.ToShortDateString(), Receipt.CustomerEmail, "", "authnet@memorybook.com", body, Utils.EmailType.Mbc);
 
 
@@ -575,7 +617,8 @@ namespace WebApp.Controllers.API
             ReceiptBindingModel Receipt = new ReceiptBindingModel();
             try
             {
-                var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,Orddate,ItemTotal,Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join lookup l1 On l1.ivalue=Orders.icon1 Left Join lookup l2 on l2.ivalue=Orders.icon2 Left Join lookup l3 on l3.ivalue=Orders.icon3  Left Join lookup l4 on l4.ivalue=Orders.icon4  where orderid=@OrderId";
+                var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Orders.SalesTax,Studentlname,Emailaddress,Orders.Schcode,ItemAmount,Itemqty,Schinvoicenumber,Adcuto,Orddate,ItemTotal,Orders.Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join InvoiceInfo I ON I.Invno=Orders.schinvoicenumber Left Join lookup l1 On l1.ivalue=Orders.icon1 Left Join lookup l2 on l2.ivalue=Orders.icon2 Left Join lookup l3 on l3.ivalue=Orders.icon3  Left Join lookup l4 on l4.ivalue=Orders.icon4    where orderid=@OrderId;";
+                // var sqlQuery = "SELECT Orders.Id,OrderId,PayType,Grade,BookType,Teacher,PersText1,Studentfname,Studentlname,Emailaddress,Schcode,ItemAmount,Itemqty,Schinvoicenumber,AdCuto,Orddate,ItemTotal,Schname,Yr,l1.caption as Caption1,l2.caption As Caption2,l3.caption As Caption3,l4.caption As Caption4 FROM Orders Left Join lookup l1 On l1.ivalue=Orders.icon1 Left Join lookup l2 on l2.ivalue=Orders.icon2 Left Join lookup l3 on l3.ivalue=Orders.icon3  Left Join lookup l4 on l4.ivalue=Orders.icon4 Left Join InvoiceInfo on Orders.Schinvoicenumber=InvoiceInfo.Invno   where orderid=@OrderId";
                 MySqlParameter[] parameters = new MySqlParameter[] { new MySqlParameter("@OrderId", orderid) };
                 var sqlQueryService = new SQLQuery();
                 var orderResult = await sqlQueryService.ExecuteReaderAsync<OrderBindingModel>(CommandType.Text, sqlQuery, parameters);
@@ -586,8 +629,9 @@ namespace WebApp.Controllers.API
                     ExceptionlessClient.Default.SubmitLog(typeof(TempOrderController).FullName, orderResult.Error.UserMessage, "Error");
                     return Ok(processingResult);
                 }
-                Receipt.Items = (List<OrderBindingModel>)orderResult.Data;
 
+                Receipt.Items = (List<OrderBindingModel>)orderResult.Data;
+                decimal vtaxrate = Receipt.Items[0].SalesTax;
                 MySqlParameter[] payParameters = new MySqlParameter[] { new MySqlParameter("@OrderId", orderid) };
                 var sqlQueryService1 = new SQLQuery();
                 sqlQuery = "Select Schcode,PayerFname,PayerLname,Poamt,PayType,TransId, AuthCode,CustEmail,Ddate,OrderId,Schname from Payment where orderid=@OrderId";
@@ -614,6 +658,7 @@ namespace WebApp.Controllers.API
                 Receipt.CustomerEmail = payment.CustEmail;
                 Receipt.OrderDate = payment.Ddate;
                 Receipt.Payment = payment.Poamt;
+                Receipt.TaxPaid = Receipt.Payment - (Receipt.Payment / (1 + vtaxrate));
                 processingResult.Data = Receipt;
 
 
@@ -647,7 +692,7 @@ namespace WebApp.Controllers.API
                 var sqlQuery = "SELECT Schname,Schcode,PayerFname,PayerLname,Poamt,PayType,TransId,AuthCode,CustEmail,Ddate,OrderId from Payment  where transid=@Transid";
                 MySqlParameter[] parameters = new MySqlParameter[] { new MySqlParameter("@Transid", transid) };
                 var sqlQueryService = new SQLQuery();
-                var payResult =await sqlQueryService.ExecuteReaderAsync<PaymentBindingModel>(CommandType.Text, sqlQuery, parameters);
+                var payResult = await sqlQueryService.ExecuteReaderAsync<PaymentBindingModel>(CommandType.Text, sqlQuery, parameters);
                 if (!payResult.IsSuccessful)
                 {
                     processingResult.IsSuccessful = false;
@@ -661,15 +706,16 @@ namespace WebApp.Controllers.API
                 processingResult.Data = payment;
                 return Ok(processingResult);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ex.ToExceptionless()
                        .SetMessage("Error retrieving payment for school receipt.");
                 processingResult.IsSuccessful = false;
-                processingResult.Error = new ProcessingError(ex.Message,ex.Message, true, false);
+                processingResult.Error = new ProcessingError(ex.Message, ex.Message, true, false);
                 return Ok(processingResult);
             }
 
-    }
+        }
     }
 }

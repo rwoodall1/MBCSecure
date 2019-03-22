@@ -6,7 +6,7 @@
     <input ng-model="form" ng-init="form=payForm" hidden>
     <div ng-if="hasLoaded">
 
-        <div class="form-group col-md-12">
+        <!--<div class="form-group col-md-12">
             <div class="radio-inline">
                 <label>
                     <input type="radio" name="payType"
@@ -27,7 +27,7 @@
                 Select a payment type.
             </div>
 
-        </div>
+        </div>-->
         <div class="form-group">
             <div class="col-sm-6">
                 <trns><strong>Amount To Be Charged</strong></trns> {{paymentInfo.total|currency}}
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-      <div class="form-group">
+        <div class="form-group">
             <label class="col-sm-3 control-label" trns>Account Address</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control"
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label class="col-sm-3 control-label" trns>Account City</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control"
@@ -111,7 +111,6 @@
             </label>
             <div class="col-sm-4">
                 <select class="form-control"
-                      
                         ng-model="paymentInfo.state"
                         ng-options="state.name for state in states"
                         name="year" ng-model-options="{ debounce: 500 }"
@@ -126,7 +125,7 @@
                 </div>
             </div>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label class="col-sm-3 control-label" trns>
                 <trns>Account Zip Code</trns>
             </label>
@@ -142,10 +141,10 @@
                     <trns>Zip Code is required.</trns>
                 </div>
             </div>
-        </div>-->
+        </div>
 
         <!--CC info-->
-        <div style="margin-bottom:20px" ng-if="paymentInfo.payType=='CC'">
+        <div style="margin-bottom:20px">
             <div class="form-group">
                 <div class="col-sm-6">
                     <label style="font-size:larger;text-decoration:underline"><trns>Credit Card Information</trns></label>

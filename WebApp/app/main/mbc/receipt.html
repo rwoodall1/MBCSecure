@@ -65,6 +65,11 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-6">
+                    <trns><strong>Tax</strong></trns> {{order.taxPaid|currency}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
                     <trns><strong>Amount Paid</strong></trns> {{order.payment|currency}}
                 </div>
             </div>
@@ -75,6 +80,10 @@
             </div>-->
             <div></div>
             <div ng-if="hasAd" style="font-size:larger"><strong><a href="http://mbcadpages.v5.pressero.com/" target="_blank">You have ordered an ad. Click here to configure your ad. (http://mbcadpages.v5.pressero.com/)</a></strong></div>
+           <div style="font-size:larger" ng-if="hasAd">Your ad  must be configured and submitted by <span style="color:red"><strong>{{order.items[0].adcuto|date}}</strong></span>
+            
+           
+            </div>
             <div style="color:red;margin-bottom:5px"><i>If you have questions about your order contact your school's yearbook advisor. </i></div>
             <div ng-repeat="item in order.items" class="row">
                 <div class="col-xs-8 col-sm-10 col-md-8">
@@ -126,6 +135,49 @@
 
 
         </div>
+		<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2450439-32', 'auto');
+  ga('require', 'ecommerce', 'ecommerce.js');
+			ga('send', 'pageview');
+			function trackEcommerce() {
+				this._addTrans = addTrans;
+				this._addItem = addItems;
+				this._trackTrans = trackTrans;
+			}
+			function addTrans(orderId, stord, total, tax, shipping, city, stat, country) {
+				ga('ecommerce:addtransaction', {
+					'orderid': order.orderId,
+					'total': order.payment,
+					'custid':order.schcode
+				})
+			}
+			
+			function addItems() {
+				for (item in order.items) {
+					ga('ecommerce:addItem', {
+						'orderid': order.orderId,
+						'Item': order.bookType,
+						'ItemAmount': order.itemAmount,
+						'Icon1': order.icon1,
+						'Icon2': order.icon2,
+						'Icon3': order.icon3,
+						'Icon4': order.icon4,
+						'Qty': order.itemqty,
+						'Total': order.itemTotal
+
+					
+
+				});
+			}
+			}
+
+
+		</script>
 
     </form>
    

@@ -75,7 +75,7 @@ namespace Services
             {
                 post_string += field.Key + "=" + HttpUtility.UrlEncode(field.Value) + "&";
             }
-            
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
             post_string = post_string.Substring(0, post_string.Length - 1);
             //' create an HttpWebRequest object to communicate with Authorize.net
             HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(post_url);
